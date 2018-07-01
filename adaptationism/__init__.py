@@ -1,1 +1,1 @@
-from adaptationism import transition_table
+from .adaptationism import transition_table

@@ -6,10 +6,10 @@ with open("README.md", "r") as fh:
 
 setup(
     name="adaptationism",
-    version="0.0.3",
+    version="0.0.6",
     author="Jameson Lee",
     author_email="jameson.developer@gmail.com",
-    description="Understand the features of language of specific kinds of ",
+    description="Understand the features of language for different kinds of corpora",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jamesonl/adaptationism",
