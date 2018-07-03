@@ -88,14 +88,11 @@ def transition_table(corpus, gram_length=1):
     usage_info = compute_usage(corpus, gram_length)
 
     for key in usage_info['entropylist']:
-        print(key, usage_info['entropylist'][key])
         cond_prob_val = {}
         relative_usage = Counter(usage_info['entropylist'][key])
         relative_words_len = sum(relative_usage.values())
-        # print(key, relative_usage)
 
         for following_gram in relative_usage:
-            # print(following_gram, relative_usage[following_gram])
             if key in cond_prob_val:
                 cond_prob_val[following_gram].append([float(relative_usage[following_gram]) / float(relative_words_len)])
             else:
