@@ -1,6 +1,6 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: adaptationism
-Version: 0.0.7
+Version: 0.0.8
 Summary: Understand the features of language for different kinds of corpora
 Home-page: https://github.com/jamesonl/adaptationism
 Author: Jameson Lee
@@ -55,3 +55,4 @@ Description: ### Last Updated: 7/1/2018
           1. [Generating N-Gram Markov Chain Transition Table](https://stackoverflow.com/questions/23374694/n-gram-markov-chain-transition-table)
         
 Platform: UNKNOWN
+Description-Content-Type: text/markdown

@@ -28,24 +28,45 @@ def compute_usage(corpus, gram_length):
             of the formatting that is applied to the string format when
             being passed through word_tokenize.
             '''
-            gram_clean = gram[2:len(gram)-3]
+            if gram_length == 1:
+                gram_clean = gram[2:len(gram)-3]
+            else:
+                gram_clean = ''.join(gram)
 
-            if counter == 0:
-                '''
-                Depending on the position and length of the gram, it is
-                necessary to denote the beginning of a statement.
-                '''
-                entropylist['[start]'].append(gram_clean.lower())
-                recent_list.append(gram_clean.lower())
-                counter += 1
-            elif counter > 0:
-                entropylist[str(recent_list[len(recent_list)-1])].append(str(gram_clean.lower()))
-                recent_list.append(gram_clean.lower())
-                counter += 1
-            elif counter == len(ngram_statement):
-                entropylist[str(recent_list[len(recent_list)-1])].append('[end]')
-                recent_list.append('[end]')
-                counter += 1
+            if gram_length == 1:
+                if counter == 0:
+                    '''
+                    Depending on the position and length of the gram, it is
+                    necessary to denote the beginning of a statement.
+                    '''
+                    entropylist['[start]'].append(gram_clean.lower())
+                    recent_list.append(gram_clean.lower())
+                    counter += 1
+                elif counter > 0:
+                    entropylist[str(recent_list[len(recent_list)-1])].append(str(gram_clean.lower()))
+                    recent_list.append(gram_clean.lower())
+                    counter += 1
+                elif counter == len(ngram_statement):
+                    entropylist[str(recent_list[len(recent_list)-1])].append('[end]')
+                    recent_list.append('[end]')
+                    counter += 1
+            else:
+                if counter == 0:
+                    '''
+                    Depending on the position and length of the gram, it is
+                    necessary to denote the beginning of a statement.
+                    '''
+                    entropylist['[start]'].append(gram_clean.lower())
+                    recent_list.append(gram_clean.lower())
+                    counter += 1
+                elif counter > 0:
+                    entropylist[str(recent_list[len(recent_list)-gram_length])].append(str(gram_clean.lower()))
+                    recent_list.append(gram_clean.lower())
+                    counter += 1
+                elif counter == len(ngram_statement):
+                    entropylist[str(recent_list[len(recent_list)-gram_length])].append('[end]')
+                    recent_list.append('[end]')
+                    counter += 1
 
 
     # Usage count represents the appearance of words (in their respective order)
@@ -93,15 +114,9 @@ def transition_table(corpus, gram_length=1):
         relative_words_len = sum(relative_usage.values())
 
         for following_gram in relative_usage:
-            if key in cond_prob_val:
-                cond_prob_val[following_gram].append([float(relative_usage[following_gram]) / float(relative_words_len)])
-            else:
-                cond_prob_val[following_gram] = [[float(relative_usage[following_gram]) / float(relative_words_len)]]
+            cond_prob_val[following_gram] = float(relative_usage[following_gram]) / float(relative_words_len)
 
-        if key in all_entropy:
-            all_entropy[key].append(cond_prob_val)
-        else:
-            all_entropy[key] = [[cond_prob_val]]
+        all_entropy[key] = [cond_prob_val]
 
     '''forcing everyone to move to JSON read/write :) '''
     return json.dumps(all_entropy)
@@ -130,9 +145,8 @@ def gram_stats(corpus, gram_length=1):
 
     for key in flat_keys:
         gram_appear = 0
-        new_key = key
         for r in removals:
-            new_key = new_key.replace(r, '')
+            key = key.replace(r, '')
 
         for row in corpus:
             if key in row:
