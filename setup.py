@@ -9,7 +9,7 @@ except(IOError, ImportError):
 
 setup(
     name="adaptationism",
-    version="0.0.8",
+    version="0.0.9",
     author="Jameson Lee",
     author_email="jameson.developer@gmail.com",
     description="Understand the features of language for different kinds of corpora",

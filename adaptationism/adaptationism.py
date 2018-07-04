@@ -116,7 +116,7 @@ def transition_table(corpus, gram_length=1):
         for following_gram in relative_usage:
             cond_prob_val[following_gram] = float(relative_usage[following_gram]) / float(relative_words_len)
 
-        all_entropy[key] = [cond_prob_val]
+        all_entropy[key] = cond_prob_val
 
     '''forcing everyone to move to JSON read/write :) '''
     return json.dumps(all_entropy)
@@ -154,3 +154,17 @@ def gram_stats(corpus, gram_length=1):
 
         appearance_dict[new_key] = [round(float(gram_appear) / float(total_rows), 8)]
     return json.dumps(appearance_dict)
+
+
+# create a melted dataframe that takes the json output and turns it into a csv
+# for visualization outside of javascript entities
+def melt_transition_table(json_output):
+    flat_output = []
+    for key in json_output:
+        for foll in json_output[key]:
+            temp_row = [key, foll, json_output[key][foll]]
+            flat_output.append(temp_row)
+    pd_flat = pd.DataFrame(flat_output)
+    headers = ['parent', 'relation', 'percentage']
+    pd_flat.columns = headers
+    return pd_flat
